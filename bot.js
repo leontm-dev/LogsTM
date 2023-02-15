@@ -314,19 +314,18 @@ client.on("messageCreate", async (message) => {
         );
         embed.setTitle("Neue Nachricht gesendet!");
     } else {
-        embed.setDescription("A new Auto-Mod-Rule was created!");
+        embed.setDescription("A new message was sent!");
         embed.addFields(
-            { name: "name", value: `${autoModerationRule.name}`, inline: false },
-            { name: "id", value: `${autoModerationRule.id}`, inline: false },
-            { name: "creator-name", value: `${autoModerationRule.guild.members.cache.get(autoModerationRule.creatorId).user.username} (${autoModerationRule.creatorId})`, inline: false},
-            { name: "actions", value: `${autoModerationRule.actions.toLocaleString()}`, inline: false },
-            { name: "trigger-type", value: `${autoModerationRule.triggerType}`, inline: false },
-            { name: "trigger meta data", value: `${autoModerationRule.triggerMetadata}`, inline: false },
-            { name: "event-type", value: `${autoModerationRule.eventType.toLocaleString()}`, inline: false },
-            { name: "exempted channels", value: autoModerationRule.exemptChannels.values.toString(), inline: false },
-            { name: "exempted roles", value: autoModerationRule.exemptRoles.values.toString(), inline: false }
+            { name: "content", value: message.content, inline: false },
+            { name: "message-id", value: message.id, inline: false },
+            { name: "author", value: `${message.guild.members.cache.get(message.author.id).user.username} (${message.author.id})`, inline: false },
+            { name: "channel", value: `${message.channel.name} (${message.channel.id})`, inline: false },
+            { name: `thread?`, value: `${message.hasThread}`, inline: false },
+            { name: `attachements`, value: `${message.attachments.entries.toString()}`, inline: false },
+            { name: "reactions", value: `${message.reactions.cache.entries.toString()}`, inline: false },
+            { name: "mentions", value: `${message.mentions.toJSON()}`, inline: false },
         );
-        embed.setTitle("Auto-Mod-Rule created!");
+        embed.setTitle("Message sent!");
     };
     if (SERVERS.get(`${autoModerationRule.guild.id}.logs`)) {
         autoModerationRule.guild.channels.cache.get(SERVERS.get(`${autoModerationRule.guild.id}.logs`)).send({ embeds: [ embed ] });
