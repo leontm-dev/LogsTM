@@ -140,6 +140,23 @@ client.on("guildCreate", async (guild) => {
     SERVERS.set(`${guild.id}.logs`, false);
     SERVERS.save();
 });
+
+// Commands
+client.on("interactionCreate", async (interaction) => {
+    if (interaction.isCommand()) {
+        if (interaction.commandName === "log-channel") {
+            await interaction.options.getChannel("channel", true);
+            let channel = interaction.options.getChannel("channel", true).id;
+            SERVERS.set(`${interaction.guild.id}.logs`, channel);
+            SERVERS.save();
+            if (SERVERS.get(`${interaction.guild.id}.logs`) != undefined) {
+                interaction.reply({ content: "Success!", ephemeral: true });
+            } else {
+                interaction.reply({ content: "There where an error!", ephemeral: true });
+            }
+        }
+    }
+})
 // Custom Log-Events
 // Auto-Mod
 client.on("autoModerationRuleCreate", async (autoModerationRule) => {
