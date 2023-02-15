@@ -327,7 +327,7 @@ client.on("messageCreate", async (message) => {
         );
         embed.setTitle("Message sent!");
     };
-    if (SERVERS.get(`${autoModerationRule.guild.id}.logs`)) {
-        autoModerationRule.guild.channels.cache.get(SERVERS.get(`${autoModerationRule.guild.id}.logs`)).send({ embeds: [ embed ] });
+    if (SERVERS.get(`${message.guild.id}.logs`)) {
+        message.guild.channels.cache.get(SERVERS.get(`${message.guild.id}.logs`)).send({ embeds: [ embed ] });
     };
 });
